@@ -37,7 +37,7 @@ const resolvers = {
       const id = args.id;
       const linkIdx = links.findIndex(link => link.id === `link-${id}`);
       const link = links[linkIdx];
-      if (!linkIdx) return 'No link found with that ID';
+      if (!link) return 'No link found with that ID';
       links.splice(linkIdx, 1);
       return link
     }
