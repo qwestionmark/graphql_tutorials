@@ -27,9 +27,11 @@ app.use('/graphql', graphqlHTTP({
             return ['Party', 'Dinner', 'Movie']
         },
         createEvent: (args) => {
-            const 
+            const eventName = args.name;
+            return eventName
         }
     },
+    graphiql: true,
 }));
 
 app.listen(4000);
