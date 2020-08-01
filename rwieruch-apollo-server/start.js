@@ -5,6 +5,7 @@
 import 'dotenv/config';
 import express from 'express';
 import { ApolloServer, gql } from 'apollo-server-express';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 
@@ -16,6 +17,11 @@ const schema = gql`
 
         messages: [Message!]!
         message(id: ID!): Message!
+    }
+
+    type Mutation {
+        createMessage(text: String!): Message!
+        deleteMessage(id: ID!): Boolean!
     }
 
     type User {
@@ -44,9 +50,9 @@ const users = {
     }
 }
 
-const me = users[1];
+let me = users[1];
 
-const messages = {
+let messages = {
     1: {
         id: '1',
         text: 'Hello World',
@@ -77,6 +83,28 @@ const resolvers = {
         message: (_, { id }) => {
             return messages[id]
         },
+    },
+    Mutation: {
+        createMessage: (_, { text }, { me }) => {
+            const id = uuidv4()
+            const message = {
+                id,
+                text,
+                userId: me.id
+            };
+            messages[id] = message;
+            users[me.id].messageIds.push(id);
+            return message            
+        },
+        deleteMessage: (_, { id }, { me }) => {
+            // Descructure messages by message found and remainder
+            const { [id]: message, ...otherMessages } = messages;
+
+            if (!message) return false;
+            // Overwrite messages
+            messages = otherMessages;
+            return true
+        }
     },
     // NOTE: Graphql resolver checks for user type to resolve field first,
     // then if not found, will fallback to default resolver of js object key.
