@@ -1,0 +1,28 @@
+{
+  "name": "backend-spellchecker-v2",
+  "version": "1.0.0",
+  "description": "GraphQL API to serve the D&D 5e-database maintained by BagelBits.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node start.js"
+  },
+  "author": "Trey",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.16.1",
+    "apollo-server-express": "^2.16.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "graphql": "^15.3.0",
+    "mongoose": "^5.9.26"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.0",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "eslint": "^7.5.0",
+    "nodemon": "^2.0.4"
+  }
+}
