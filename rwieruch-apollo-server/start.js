@@ -22,6 +22,7 @@ const schema = gql`
     type Mutation {
         createMessage(text: String!): Message!
         deleteMessage(id: ID!): Boolean!
+        updateMessage(id: ID!, text: String!): Message!
     }
 
     type User {
@@ -104,7 +105,15 @@ const resolvers = {
             // Overwrite messages
             messages = otherMessages;
             return true
-        }
+        },
+        updateMessage: (_, { id, text }) => {
+            const { [id]: message } = messages;
+
+            if (!message) return `Message with id: ${id} not found`;
+            message.text = text
+            messages[id] = message;
+            return message;
+        },
     },
     // NOTE: Graphql resolver checks for user type to resolve field first,
     // then if not found, will fallback to default resolver of js object key.
