@@ -1,5 +1,5 @@
 const message = (sequelize, DataTypes) => {
-    const MEssage = sequelize.define('message', {
+    const Message = sequelize.define('message', {
         text: {
             type: DataTypes.STRING,
             allowNull: false,

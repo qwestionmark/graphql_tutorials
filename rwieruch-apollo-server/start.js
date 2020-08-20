@@ -5,12 +5,15 @@
 import 'dotenv/config';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import models from './src/models/index';
-import schema from './src/schema/index.js';
+import models, { sequelize } from './src/models/index';
+import schema from './src/schema/index';
 import resolvers from './src/resolvers/index';
+import { createUsersWithMessages } from './seed';
 
 const app = express();
 
+// Deconstruct ENV vars for brevity
+const { ROOT_ENDPOINT, ERASE_DB_ON_SYNC, PORT } = process.env
 
 const server = new ApolloServer({
   typeDefs: schema,
@@ -21,8 +24,14 @@ const server = new ApolloServer({
   }
 });
 
-server.applyMiddleware({ app, path: process.env.ROOT_PATH });
+server.applyMiddleware({ app, path: ROOT_ENDPOINT });
 
-app.listen({ port: process.env.PORT }, () => {
-    console.log(`Server is running at http://localhost:${process.env.PORT}${process.env.ROOT_PATH}`);
-  });
+sequelize.sync({ force: ERASE_DB_ON_SYNC }).then(() => {
+  if (ERASE_DB_ON_SYNC) {
+    createUsersWithMessages();
+  }
+
+  app.listen({ port: PORT }, () => {
+      console.log(`Server is running at http://localhost:${PORT}${ROOT_ENDPOINT}`);
+    });
+});
