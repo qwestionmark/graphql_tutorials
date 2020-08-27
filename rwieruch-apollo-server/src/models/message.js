@@ -4,8 +4,10 @@ const message = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                notEmpty: true,
-                msg: 'A message has to have text.'
+                notEmpty: {
+                    args: true,
+                    msg: 'Text must not be empty.'
+                },
             },
         }
     });
