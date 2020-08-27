@@ -5,6 +5,7 @@ const message = (sequelize, DataTypes) => {
             allowNull: false,
             validate: {
                 notEmpty: true,
+                msg: 'A message has to have text.'
             },
         }
     });

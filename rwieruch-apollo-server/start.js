@@ -18,10 +18,10 @@ const { ROOT_ENDPOINT, ERASE_DB_ON_SYNC, PORT } = process.env
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
-  context: {
+  context: async () => ({
       models,
-      me: models.User.findAll()[0],
-  }
+      me: await models.User.findByLogin('rwieruch')
+  })
 });
 
 server.applyMiddleware({ app, path: ROOT_ENDPOINT });
